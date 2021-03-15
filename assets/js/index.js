@@ -1,6 +1,21 @@
 $(function () {
     // 获取用户信息
     getUserInfo()
+
+    // 退出
+    let layer = layui.layer
+    $('#btnLogout').on('click', function () {
+        layer.confirm('确定退出？', { icon: 3, title: '提示' }, function (index) {
+            // 清除 token 跳转
+            localStorage.removeItem('token')
+            location.href = '/login.html'
+
+            // 关闭弹出窗
+            layer.close(index);
+        });
+
+
+    })
 })
 
 
@@ -10,10 +25,10 @@ function getUserInfo() {
     $.ajax({
         type: 'get',
         url: '/my/userinfo',
-
-        headers: {
-            Authorization: localStorage.getItem('token') || ''
-        },
+        // 封装
+        // headers: {
+        // Authorization: localStorage.getItem('token') || ''
+        // },
         success: (res) => {
             if (res.status !== 0) {
                 return layui.layer.msg(res.message)
